@@ -15,8 +15,6 @@ log_interval = 1
 influx_client = InfluxDBClient(influx_host, influx_port, influx_user, influx_passwd, influx_dbname)
 influx_client.create_database(influx_dbname)
 
-sensorlist = ow.Sensor('/').sensorList()
-
 ow_url = 'http://localhost:2121/text/uncached/'
 
 def get_sensors(sensor_type='DS18B20'):
