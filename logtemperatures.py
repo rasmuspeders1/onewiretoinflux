@@ -13,7 +13,14 @@ influx_dbname = 'temperatures'
 log_interval = 1
 
 influx_client = InfluxDBClient(influx_host, influx_port, influx_user, influx_passwd, influx_dbname)
-influx_client.create_database(influx_dbname)
+try_start=time.time()
+while True:
+    try:
+        influx_client.create_database(influx_dbname)
+        break
+    except:
+        if time.time() - try_start > 30:
+            raise
 
 ow_url = 'http://localhost:2121/text/uncached/'
 
