@@ -1,0 +1,45 @@
+- hosts: all
+  vars: 
+  tasks:
+  - name: ensure dependencies are installed
+    become: true
+    apt:
+      name: "{{item}}"
+      state: latest
+    with_items:
+      - python3
+      - python-requests
+      - python-influxdb
+      - owfs
+
+  - name: install onewiretoinflux python package
+    become: true
+    pip:
+      name: "file://../"
+      state: forcereinstall
+
+  - name: ensure logtemperature.service file is correct
+    become: true
+    template:
+      src: logtemperature.service.j2
+      dest: /etc/systemd/system/logtemperature.service
+    notify:
+      restart logtemperature
+  
+  
+  - name: ensure logtemperatures systemd service is running and enabled
+    become: true
+    systemd:
+      daemon_reload: yes
+      name: logtemperatures
+      enabled: yes
+      state: started
+  
+
+  handlers:
+    - name: restart logtemperature
+      become: true
+      systemd:
+        name: logtemperature
+        daemon_reload: true
+        state: restarted

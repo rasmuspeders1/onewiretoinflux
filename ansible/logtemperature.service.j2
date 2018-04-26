@@ -4,7 +4,7 @@ Requires=influxdb.service owhttpd.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python /home/pi/git/onewiretoinflux/logtemperatures.py
+ExecStart=logtemperatures
 Restart=always
 RestartSec=3
 
