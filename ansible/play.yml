@@ -15,8 +15,10 @@
   - name: install onewiretoinflux python package
     become: true
     pip:
-      name: "file://../"
-      state: forcereinstall
+      name: "git+https://github.com/rasmuspeders1/onewiretoinflux.git@package"
+      state: latest
+    notify:
+      restart logtemperature
 
   - name: ensure logtemperature.service file is correct
     become: true
@@ -31,7 +33,7 @@
     become: true
     systemd:
       daemon_reload: yes
-      name: logtemperatures
+      name: logtemperature
       enabled: yes
       state: started
   
